@@ -11,6 +11,7 @@ import com.cargasur.transporte.service.OrdenService;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/ordenes")
@@ -31,5 +32,16 @@ public class OrdenController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }
+
+    @GetMapping("/listarPorCliente/{clienteId}")
+    public ResponseEntity<?> listarOrdenesPorCliente(@PathVariable Long clienteId) {
+        List<Orden> ordenes = ordenService.buscarOrdenesPorClienteId(clienteId);
+
+        if (ordenes.isEmpty()) {
+            return ResponseEntity.status(404).body(Map.of("mensaje", "No se encontraron órdenes para el cliente"));
+        }
+
+        return ResponseEntity.ok(ordenes);
     }
 }

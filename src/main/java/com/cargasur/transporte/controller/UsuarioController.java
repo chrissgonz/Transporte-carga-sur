@@ -36,4 +36,22 @@ public class UsuarioController {
             return ResponseEntity.status(401).body(Map.of("mensaje", "Credenciales inválidas"));
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerUsuario(@PathVariable Long id) {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+
+        if (usuario.isPresent()) {
+            Usuario u = usuario.get();
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("id", u.getId());
+            datos.put("correo", u.getCorreo());
+            datos.put("rol", u.getRol());
+            datos.put("mensaje", "Perfil obtenido correctamente");
+
+            return ResponseEntity.ok(datos);
+        }
+
+        return ResponseEntity.status(404).body(Map.of("mensaje", "Usuario no encontrado"));
+    }
 }

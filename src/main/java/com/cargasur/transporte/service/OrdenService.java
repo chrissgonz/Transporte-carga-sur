@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class OrdenService {
@@ -22,5 +23,9 @@ public class OrdenService {
 
     public Optional<Orden> buscarOrdenPorId(Long id) {
         return ordenRepository.findById(id);
+    }
+
+    public List<Orden> buscarOrdenesPorClienteId(Long clienteId) {
+        return ordenRepository.findByClienteId(clienteId);
     }
 }
