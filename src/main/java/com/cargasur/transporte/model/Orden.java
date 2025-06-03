@@ -19,7 +19,7 @@ public class Orden {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
 
     @Column(nullable = false)

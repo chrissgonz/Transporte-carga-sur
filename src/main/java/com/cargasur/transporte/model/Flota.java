@@ -1,5 +1,6 @@
 package com.cargasur.transporte.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,5 +35,7 @@ public class Flota {
     private String estado_operativo;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date ultima_mantencion;
 }

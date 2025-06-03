@@ -1,4 +1,4 @@
-package com.cargasur.transporte.model;
+/*package com.cargasur.transporte.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,3 +38,4 @@ public class Entrega {
         private String estado_pago;
     }
 }
+*/

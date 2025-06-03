@@ -1,57 +1,60 @@
 package com.cargasur.transporte.controller;
 
 import com.cargasur.transporte.model.Usuario;
-import com.cargasur.transporte.repository.UsuarioRepository;
-
+import com.cargasur.transporte.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> datos) {
-        String correo = datos.get("correo");
-        String clave = datos.get("clave");
-
-        Optional<Usuario> usuario = usuarioRepository.findByCorreoAndClave(correo, clave);
-
-        if (usuario.isPresent()) {
-            Usuario u = usuario.get();
-            Map<String, Object> respuesta = new HashMap<>();
-            respuesta.put("id", u.getId());
-            respuesta.put("correo", u.getCorreo());
-            respuesta.put("rol", u.getRol());
-            respuesta.put("mensaje", "Login exitoso");
-
-            return ResponseEntity.ok(respuesta);
-        } else {
-            return ResponseEntity.status(401).body(Map.of("mensaje", "Credenciales inválidas"));
-        }
+    @GetMapping
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        return ResponseEntity.ok(usuarioService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> obtenerUsuario(@PathVariable Long id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
+    public ResponseEntity<Object> obtenerUsuario(@PathVariable Long id) {
+        Optional<Usuario> usuario = usuarioService.getById(id);
 
         if (usuario.isPresent()) {
-            Usuario u = usuario.get();
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("id", u.getId());
-            datos.put("correo", u.getCorreo());
-            datos.put("rol", u.getRol());
-            datos.put("mensaje", "Perfil obtenido correctamente");
-
-            return ResponseEntity.ok(datos);
+            return ResponseEntity.ok(usuario.get());
+        } else {
+            return ResponseEntity.status(404).body("Usuario no encontrado");
         }
+    }
 
-        return ResponseEntity.status(404).body(Map.of("mensaje", "Usuario no encontrado"));
+    @PostMapping
+    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
+        return ResponseEntity.ok(usuarioService.create(usuario));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
+        Optional<Usuario> usuarioActualizado = usuarioService.update(id, usuario);
+
+        if (usuarioActualizado.isPresent()) {
+            return ResponseEntity.ok(usuarioActualizado.get());
+        } else {
+            return ResponseEntity.status(404).body("Usuario no encontrado");
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id) {
+        if (usuarioService.delete(id)) {
+            return ResponseEntity.ok("Usuario eliminado");
+        } else {
+            return ResponseEntity.status(404).body("Usuario no encontrado");
+        }
     }
 }
