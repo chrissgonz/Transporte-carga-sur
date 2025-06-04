@@ -42,7 +42,7 @@ public class UsuarioService {
         }).orElse(false);
     }
 
-    public Optional<Usuario> login(String correo, String contrasena) {
-        return usuarioRepository.findByCorreoAndContrasena(correo, contrasena);
+    public Optional<Usuario> login(String correo, String clave) {
+        return usuarioRepository.findByCorreoAndClave(correo, clave);
     }
 }
