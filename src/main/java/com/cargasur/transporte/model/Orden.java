@@ -31,6 +31,7 @@ public class Orden {
     @Column(nullable = false)
     private String estado;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaCreacion; // ✅ Ahora sí está bien
+    private Date fechaCreacion;
 }

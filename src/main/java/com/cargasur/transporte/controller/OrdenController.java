@@ -35,7 +35,9 @@ public class OrdenController {
 
     @PutMapping("/{id}/modificar")
     public ResponseEntity<?> modificarOrden(@PathVariable Long id, @RequestBody Orden orden) {
-        if (!ordenService.getById(id).isPresent()) {
+        Optional<Orden> existente = ordenService.getById(id);
+
+        if (existente.isEmpty()) {
             return ResponseEntity.status(404).body("Orden no encontrada");
         }
 
