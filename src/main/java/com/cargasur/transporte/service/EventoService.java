@@ -4,6 +4,7 @@ import com.cargasur.transporte.model.Evento;
 import com.cargasur.transporte.repository.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+package com.cargasur.transporte.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,5 +44,9 @@ public class EventoService {
             eventoRepository.delete(e);
             return true;
         }).orElse(false);
+    }
+
+    public List<Evento> getEventosByOrdenId(Long idOrden) {
+        return eventoRepository.findByOrdenId(idOrden);
     }
 }

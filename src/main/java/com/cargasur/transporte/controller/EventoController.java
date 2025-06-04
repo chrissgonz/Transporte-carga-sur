@@ -54,4 +54,13 @@ public class EventoController {
         eventoService.delete(id);
         return ResponseEntity.ok().body(Collections.singletonMap("mensaje", "Evento eliminado exitosamente"));
     }
+
+    @GetMapping("/eventos/{viajeId}")
+    public ResponseEntity<?> obtenerEventosPorViaje(@PathVariable Long viajeId) {
+        List<Evento> eventos = eventoService.getEventosByOrdenId(viajeId);
+        if (eventos.isEmpty()) {
+            return ResponseEntity.status(404).body("No se encontraron eventos para la orden especificada.");
+        }
+        return ResponseEntity.ok(eventos);
+    }
 }
