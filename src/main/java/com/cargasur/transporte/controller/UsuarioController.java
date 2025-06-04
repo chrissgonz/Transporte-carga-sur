@@ -60,7 +60,7 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario request) {
-        Optional<Usuario> usuario = uusuarioService.login(request.getCorreo(), request.getClave());
+        Optional<Usuario> usuario = usuarioService.login(request.getCorreo(), request.getClave());
 
         if (usuario.isPresent()) {
             return ResponseEntity.ok(usuario.get());
