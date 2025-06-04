@@ -57,4 +57,15 @@ public class UsuarioController {
             return ResponseEntity.status(404).body("Usuario no encontrado");
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Usuario request) {
+        Optional<Usuario> usuario = usuarioService.login(request.getCorreo(), request.getContrasena());
+
+        if (usuario.isPresent()) {
+            return ResponseEntity.ok(usuario.get());
+        } else {
+            return ResponseEntity.status(401).body("Credenciales inválidas");
+        }
+    }
 }

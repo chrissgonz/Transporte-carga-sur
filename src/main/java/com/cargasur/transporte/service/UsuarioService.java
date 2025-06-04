@@ -41,4 +41,8 @@ public class UsuarioService {
             return true;
         }).orElse(false);
     }
+
+    public Optional<Usuario> login(String correo, String contrasena) {
+        return usuarioRepository.findByCorreoAndContrasena(correo, contrasena);
+    }
 }
