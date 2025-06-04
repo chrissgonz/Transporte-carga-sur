@@ -32,4 +32,15 @@ public class OrdenController {
         }
         return ResponseEntity.ok(ordenes);
     }
+
+    @PutMapping("/{id}/modificar")
+    public ResponseEntity<?> modificarOrden(@PathVariable Long id, @RequestBody Orden orden) {
+        if (!ordenService.getById(id).isPresent()) {
+            return ResponseEntity.status(404).body("Orden no encontrada");
+        }
+
+        orden.setId(id);
+        Orden actualizada = ordenService.update(orden);
+        return ResponseEntity.ok(actualizada);
+    }
 }
