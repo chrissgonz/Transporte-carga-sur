@@ -1,12 +1,14 @@
 package com.cargasur.transporte.controller;
 
-import com.cargasur.transporte.model.Orden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.cargasur.transporte.service.OrdenService;
 
+import com.cargasur.transporte.model.Orden;
+import com.cargasur.transporte.service.OrdenService;
+import com.cargasur.transporte.model.Cliente;
+import com.cargasur.transporte.repository.ClienteRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +43,9 @@ public class OrdenController {
             return ResponseEntity.status(404).body("Orden no encontrada");
         }
 
-        Optional<Cliente> clienteReal = clienteRepository.findById(orden.getCliente().getId());
+        Integer clienteId = Integer.valueOf(orden.getCliente().getId());
+
+        Optional<Cliente> clienteReal = clienteRepository.findById(clienteId);
         if (clienteReal.isEmpty()) {
             return ResponseEntity.status(400).body("Cliente no válido");
         }
@@ -51,4 +55,5 @@ public class OrdenController {
         Orden actualizada = ordenService.update(orden);
         return ResponseEntity.ok(actualizada);
     }
+}
 }
