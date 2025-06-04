@@ -20,8 +20,8 @@ public class OrdenController {
 
     @Autowired
     private OrdenService ordenService;
-
-
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @GetMapping("/listarPorCliente/{clienteId}")
     public ResponseEntity<?> listarOrdenesPorCliente(@PathVariable Long clienteId) {
@@ -41,7 +41,13 @@ public class OrdenController {
             return ResponseEntity.status(404).body("Orden no encontrada");
         }
 
+        Optional<Cliente> clienteReal = clienteRepository.findById(orden.getCliente().getId());
+        if (clienteReal.isEmpty()) {
+            return ResponseEntity.status(400).body("Cliente no válido");
+        }
+
         orden.setId(id);
+        orden.setCliente(clienteReal.get());
         Orden actualizada = ordenService.update(orden);
         return ResponseEntity.ok(actualizada);
     }
