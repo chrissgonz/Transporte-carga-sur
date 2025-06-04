@@ -43,4 +43,22 @@ public class FacturacionService {
             return true;
         }).orElse(false);
     }
+
+    public String anularFactura(Integer idFactura) {
+        Optional<Facturacion> facturaOptional = facturacionRepository.findById(idFactura);
+
+        if (facturaOptional.isEmpty()) {
+            return "NOT_FOUND";
+        }
+
+        Facturacion factura = facturaOptional.get();
+
+        if ("anulada".equalsIgnoreCase(factura.getEstado_pago())) {
+            return "ALREADY_ANULADA";
+        }
+
+        factura.setEstado_pago("anulada");
+        facturacionRepository.save(factura);
+        return "OK";
+    }
 }

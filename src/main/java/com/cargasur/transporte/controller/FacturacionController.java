@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 @RestController
 @RequestMapping("/api/facturacion")
 @CrossOrigin(origins = "*")
@@ -53,5 +54,16 @@ public class FacturacionController {
         }
         facturacionService.delete(id);
         return ResponseEntity.ok().body(Collections.singletonMap("mensaje", "Factura eliminada exitosamente"));
+    }
+
+    @PostMapping("/anularFactura")
+    public ResponseEntity<?> anularFactura(@RequestParam Integer idFactura) {
+        String resultado = facturacionService.anularFactura(idFactura);
+
+        return switch (resultado) {
+            case "NOT_FOUND" -> ResponseEntity.status(404).body("Factura no encontrada");
+            case "ALREADY_ANULADA" -> ResponseEntity.status(400).body("La factura ya está anulada");
+            default -> ResponseEntity.ok("Factura anulada exitosamente");
+        };
     }
 }
